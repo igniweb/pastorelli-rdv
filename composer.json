@@ -1,6 +1,5 @@
 {
 	"name": "igniweb/pastorelli-rdv",
-	"type": "project",
 	"require": {
 		"laravel/framework": "5.0.*"
 	},

@@ -1,0 +1,9 @@
+{
+  "name": "igniweb/pastorelli-rdv",
+  "private": true,
+  "devDependencies": {},
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "semantic-ui": "~1.12.3"
+  }
+}
