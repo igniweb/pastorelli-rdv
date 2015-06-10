@@ -2,7 +2,8 @@
 	"name": "igniweb/pastorelli-rdv",
 	"require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.1.*"
+        "laravel/framework": "5.1.*",
+        "pusher/pusher-php-server": "~2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

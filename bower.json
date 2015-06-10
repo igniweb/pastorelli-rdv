@@ -4,6 +4,7 @@
   "devDependencies": {},
   "dependencies": {
     "jquery": "~2.1.4",
-    "semantic-ui": "~1.12.3"
+    "semantic-ui": "~1.12.3",
+    "pusher": "~2.2.4"
   }
 }
