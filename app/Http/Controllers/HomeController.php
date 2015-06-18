@@ -27,7 +27,9 @@ class HomeController extends Controller {
         ]);
         event(new RdvIsSaved($rdv));
 
-        return view('home.index');
+        $rdvs = Rdv::all();
+
+        return view('home.index', compact('rdvs'));
     }
 
 }
