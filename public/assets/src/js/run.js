@@ -4,6 +4,7 @@
 
     // Run modules
     app.module(
+        'pusher',
         'calendar'
     );
 
