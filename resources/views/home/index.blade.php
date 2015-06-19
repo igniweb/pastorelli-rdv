@@ -1,13 +1,12 @@
 @extends('layouts.default')
 
 @section('main')
-<h2>Yo broadcast</h2>
+<h2>Yo broadcast!</h2>
 <ul id="rdvs">
     @foreach ($rdvs as $rdv)
-        <li>{{ $rdv->label }}</li>
+        <?php $rdvArray = $rdv->toArray(); unset($rdvArray['guest']); ?><li title="{!! print_r($rdvArray, true) . PHP_EOL . print_r($rdv->guest->toArray(), true) !!}">{{ $rdv->body }}</li>
     @endforeach
 </ul>
-<pre><?php //var_dump($agenda->rdvs); ?></pre>
 @stop
 
 @section('scripts')
@@ -15,7 +14,7 @@
     jQuery(document).ready(function ($) {
         App.pusher.setup('{{ env("PUSHER_KEY") }}');
         App.pusher.subscribe('rdv', 'App\\Events\\RdvIsSaved', function (data) {
-            $('#rdvs').append('<li>' + data.rdv.label + '</li>');
+            $('#rdvs').append('<li>' + data.rdv.body + '</li>');
         });
     });
 </script>

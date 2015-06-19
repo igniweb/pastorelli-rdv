@@ -23,7 +23,7 @@ class Rdv extends Model {
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'start_at', 'end_at', 'duration', 'label', 'color', 'created_by', 'updated_by'];
+    protected $fillable = ['admin_id', 'guest_id', 'start_at', 'end_at', 'duration', 'name', 'email', 'tel', 'body', 'color', 'created_by', 'updated_by'];
 
     /**
      * The attributes excluded from the model's JSON form.

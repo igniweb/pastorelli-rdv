@@ -16,9 +16,11 @@ class CreateUsersTable extends Migration {
 		{
 			$table->increments('id');
 			$table->enum('role', ['super-admin', 'admin', 'guest']);
-			$table->string('first_name');
-			$table->string('last_name');
-			$table->string('email');
+			$table->string('login')->unique();
+			$table->string('first_name')->nullable();
+			$table->string('last_name')->nullable();
+			$table->string('email')->nullable();
+			$table->string('tel')->nullable();
 			$table->string('password');
 			$table->timestamps();
 

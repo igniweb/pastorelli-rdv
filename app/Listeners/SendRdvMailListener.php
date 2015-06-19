@@ -33,7 +33,9 @@ class SendRdvMailListener implements ShouldQueue {
      */
     public function handle(RdvIsSaved $event)
     {
-        $this->mailer->send('emails.rdv_saved', ['rdv' => $event->rdv], function ($message) use ($event)
+        $rdv = $event->rdv;
+
+        $this->mailer->send('emails.rdv_saved', ['rdv' => $rdv], function ($message) use ($rdv)
         {
             $message->from('no-reply@pastorelli-rdv.dev', 'No-reply');
             $message->to('smuller@tequilarapido.com');
