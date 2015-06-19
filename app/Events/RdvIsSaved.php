@@ -9,13 +9,17 @@ class RdvIsSaved extends Event implements ShouldBroadcast {
 
     use SerializesModels;
 
+    /**
+     * Saved rendez-vous.
+     *
+     * @var \App\Models\Rdv
+     */
     public $rdv;
 
     /**
      * Create a new event instance.
      *
-     * @param Rdv $rdv
-     * @return void
+     * @param \App\Models\Rdv $rdv
      */
     public function __construct(Rdv $rdv)
     {

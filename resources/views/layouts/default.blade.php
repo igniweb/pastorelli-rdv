@@ -12,6 +12,7 @@
     <script src="/assets/vendor/semantic-ui/dist/semantic{{ $minified }}.js"></script>
     <script src="/assets/vendor/pusher/dist/pusher{{ $minified }}.js"></script>
     <script src="/assets/src/js/app.js"></script>
+    <script src="/assets/src/js/app.pusher.js"></script>
     <script src="/assets/src/js/app.calendar.js"></script>
     <script src="/assets/src/js/run.js"></script>
     @yield('scripts')

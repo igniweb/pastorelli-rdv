@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\Agenda;
 use App\Events\RdvIsSaved;
 use App\Models\Rdv;
 use Carbon\Carbon;
@@ -8,6 +9,17 @@ use Faker\Factory as Faker;
 class HomeController extends Controller {
 
     public function index()
+    {
+        //$this->createRdv();
+
+        $agenda = new Agenda(rand(1, 4));
+
+        $rdvs = Rdv::orderBy('start_at')->get();
+
+        return view('home.index', compact('agenda', 'rdvs'));
+    }
+
+    private function createRdv()
     {
         $faker = Faker::create();
         $format = 'Y-m-d H:i:s';
@@ -26,10 +38,6 @@ class HomeController extends Controller {
             'updated_by' => rand(1, 4),
         ]);
         event(new RdvIsSaved($rdv));
-
-        $rdvs = Rdv::all();
-
-        return view('home.index', compact('rdvs'));
     }
 
 }
