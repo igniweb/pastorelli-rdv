@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email')->nullable();
 			$table->string('tel')->nullable();
 			$table->string('password');
+			$table->rememberToken();
 			$table->timestamps();
 
 			$table->engine = 'InnoDB';

@@ -7,6 +7,7 @@
         <?php $rdvArray = $rdv->toArray(); unset($rdvArray['guest']); ?><li title="{!! print_r($rdvArray, true) . PHP_EOL . print_r($rdv->guest->toArray(), true) !!}">{{ $rdv->body }}</li>
     @endforeach
 </ul>
+<pre><?php print_r($options); ?></pre>
 @stop
 
 @section('scripts')

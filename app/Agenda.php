@@ -1,12 +1,15 @@
 <?php namespace App;
 
 use App\Events\RdvIsSaved;
+use App\Models\Option;
 use App\Models\Rdv;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Agenda {
+
+    const DEFAULT_USER_ID = 2;
 
     /**
      * Agenda owner.
@@ -16,6 +19,13 @@ class Agenda {
     public $user;
 
     /**
+     * Agenda owner options.
+     *
+     * @var \App\Models\Option
+     */
+    public $options;
+
+    /**
      * Class constructor.
      *
      * @param int $userId
@@ -23,11 +33,34 @@ class Agenda {
      */
     public function __construct($userId)
     {
-        $this->user = User::find($userId);
+        $this->user = User::find($userId, ['id', 'role', 'first_name', 'last_name', 'email', 'tel']);
         if ( ! $this->user)
         {
             throw new ModelNotFoundException('User #' . $userId . ' cannot be found.');
         }
+    }
+
+    /**
+     * Returns user options as an associative array.
+     *
+     * @return array
+     */
+    public function options()
+    {
+        if ( ! is_null($this->options))
+        {
+            return $this->options;
+        }
+
+        $options = [];
+
+        $dbOptions = Option::select('key', 'value')->where('user_id', '=', $this->user->id)->get();
+        foreach ($dbOptions as $option)
+        {
+            $options[$option->key] = $option->value;
+        }
+
+        return $this->options = $options;
     }
 
     /**
@@ -56,11 +89,11 @@ class Agenda {
      */
     public function rdvs($from = false, $to = false)
     {
-        $rawRdvs = $this->rawRdvs($from, $to);
-        $guests = $this->guestsInRdvs($rawRdvs);
+        $dbRdvs = $this->dbRdvs($from, $to);
+        $guests = $this->guestsInRdvs($dbRdvs);
 
         $rdvs = [];
-        foreach ($rawRdvs as $rdv)
+        foreach ($dbRdvs as $rdv)
         {
             $guest = ( ! empty($rdv->guest_id) and isset($guests[$rdv->guest_id])) ? $guests[$rdv->guest_id] : null;
             $rdv->setAttribute('guest', $guest);
@@ -78,9 +111,9 @@ class Agenda {
      * @param string|false $to
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    private function rawRdvs($from = false, $to = false)
+    private function dbRdvs($from = false, $to = false)
     {
-        $query = Rdv::select('id', 'guest_id', 'start_at', 'end_at', 'duration', 'name', 'email', 'tel', 'body', 'color', 'created_by', 'updated_by');
+        $query = Rdv::select('id', 'guest_id', 'start_at', 'end_at', 'duration', 'name', 'email', 'tel', 'body', 'color');
         $query = $query->where('admin_id', '=', $this->user->id);
 
         if ($from)
@@ -109,8 +142,8 @@ class Agenda {
     {
         $guests = [];
 
-        $rawGuests = User::whereIn('id', array_pluck($rdvs, 'guest_id'))->get();
-        foreach ($rawGuests as $guest)
+        $dbGuests = User::select('id', 'first_name', 'last_name', 'email', 'tel')->whereIn('id', array_pluck($rdvs, 'guest_id'))->get();
+        foreach ($dbGuests as $guest)
         {
             $guests[$guest->id] = $guest;
         }

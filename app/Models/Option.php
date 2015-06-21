@@ -1,19 +1,15 @@
 <?php namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class User extends Model implements AuthenticatableContract {
-
-    use Authenticatable;
+class Option extends Model {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'users';
+    protected $table = 'options';
 
     /**
      * Enable/disable the timestamps field.
@@ -27,13 +23,13 @@ class User extends Model implements AuthenticatableContract {
      *
      * @var array
      */
-    protected $fillable = ['login', 'role', 'first_name', 'last_name', 'email', 'tel', 'remember_token', 'password'];
+    protected $fillable = ['user_id', 'key', 'value'];
 
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
-    protected $hidden = ['remember_token', 'password'];
+    protected $hidden = [];
 
 }
