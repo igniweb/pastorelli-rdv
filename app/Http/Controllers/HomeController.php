@@ -2,18 +2,23 @@
 
 use Auth;
 use App\Agenda;
+use App\Models\User;
+use Carbon\Carbon;
 
 class HomeController extends Controller {
 
     public function index()
     {
-        $authUser = Auth::user();
+        $doctors = User::doctors();
 
+        $authUser = Auth::user();
         $agenda = new Agenda($this->agendaUser($authUser));
         $options = $agenda->options();
-        $rdvs = $agenda->rdvs();
 
-        return view('home.index', compact('authUser', 'agenda', 'options', 'rdvs'));
+        $day = Carbon::now()->addDay()->format('Y-m-d');
+        $agenda->setup($day, $day);
+
+        return view('home.index', compact('doctors', 'agenda', 'options', 'day'));
     }
 
     private function agendaUser($user)

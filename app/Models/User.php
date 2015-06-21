@@ -36,4 +36,21 @@ class User extends Model implements AuthenticatableContract {
      */
     protected $hidden = ['remember_token', 'password'];
 
+    /**
+     * Doctor user IDs.
+     *
+     * @var array
+     */
+    public static $doctorIds = [1, 2, 3];
+
+    /**
+     * Return doctor users collection.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function doctors()
+    {
+        return static::whereIn('id', static::$doctorIds)->orderBy('id')->get();
+    }
+
 }

@@ -26,6 +26,13 @@ class Agenda {
     public $options;
 
     /**
+     * Agenda owner options.
+     *
+     * @var \Illuminate\Database\Eloquent\Collection
+     */
+    public $rdvs;
+
+    /**
      * Class constructor.
      *
      * @param int $userId
@@ -87,7 +94,7 @@ class Agenda {
      * @param string|false $to
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function rdvs($from = false, $to = false)
+    public function setup($from = false, $to = false)
     {
         $dbRdvs = $this->dbRdvs($from, $to);
         $guests = $this->guestsInRdvs($dbRdvs);
@@ -101,7 +108,32 @@ class Agenda {
             $rdvs[] = $rdv;
         }
 
-        return new Collection($rdvs);
+        $this->rdvs = new Collection($rdvs);
+
+        return $this->rdvs;
+    }
+
+    /**
+     * Returns RDVs if matching day + time is found in previously getted RDVs.
+     * Seconds are automatically set to '00'.
+     *
+     * @param string $day
+     * @param string $time
+     * @return \Illuminate\Database\Eloquent\Collection|bool
+     */
+    public function rdvs($day, $time)
+    {
+        if (empty($this->rdvs))
+        {
+            return false;
+        }
+
+        $filtered = $this->rdvs->filter(function ($rdv) use ($day, $time)
+        {
+            return (strpos($rdv->start_at, $day . ' ' . $time . ':00') !== false) ? true : false;
+        });
+
+        return $filtered->all();
     }
 
     /**
